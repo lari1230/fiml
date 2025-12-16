@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Вход - Киносайт</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+<!-- Навигация -->
+<header>
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="logo">
+                <a href="/">
+                    <i class="fas fa-film"></i>
+                    <span>Киносайт</span>
+                </a>
+            </div>
+
+            <div class="nav-menu" id="navMenu">
+                <a href="/" class="nav-link">
+                    <i class="fas fa-home"></i>
+                    <span>Главная</span>
+                </a>
+                <a href="/catalog.html" class="nav-link">
+                    <i class="fas fa-list"></i>
+                    <span>Каталог</span>
+                </a>
+                <a href="/top.html" class="nav-link">
+                    <i class="fas fa-star"></i>
+                    <span>Топ фильмов</span>
+                </a>
+            </div>
+
+            <div class="nav-search">
+                <input type="text" id="globalSearch" placeholder="Поиск фильмов...">
+                <button onclick="searchMovies()">
+                    <i class="fas fa-search"></i>
+                </button>
+            </div>
+
+            <div class="nav-auth" id="authSection">
+                <!-- Будет заполнено JavaScript -->
+            </div>
+
+            <button class="nav-toggle" onclick="toggleMenu()">
+                <i class="fas fa-bars"></i>
+            </button>
+        </div>
+    </nav>
+</header>
+
+<!-- Основной контент -->
+<main class="auth-page">
+    <div class="container">
+        <div class="auth-container">
+            <div class="auth-card">
+                <div class="auth-header">
+                    <h1>
+                        <i class="fas fa-sign-in-alt"></i>
+                        Вход в аккаунт
+                    </h1>
+                    <p>Введите ваши учетные данные для входа</p>
+                </div>
+
+                <div class="auth-body">
+                    <form id="loginForm" onsubmit="login(event)">
+                        <div class="form-group">
+                            <label for="email">
+                                <i class="fas fa-envelope"></i>
+                                Email адрес
+                            </label>
+                            <input type="email" id="email" class="form-control"
+                                   placeholder="Ваш email" required>
+                            <div class="form-error" id="emailError"></div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="password">
+                                <i class="fas fa-lock"></i>
+                                Пароль
+                            </label>
+                            <input type="password" id="password" class="form-control"
+                                   placeholder="Ваш пароль" required>
+                            <div class="form-error" id="passwordError"></div>
+                        </div>
+
+                        <div class="form-group form-check">
+                            <input type="checkbox" id="rememberMe" class="form-check-input">
+                            <label for="rememberMe" class="form-check-label">
+                                Запомнить меня
+                            </label>
+                        </div>
+
+                        <button type="submit" class="btn btn-primary btn-block">
+                            <i class="fas fa-sign-in-alt"></i>
+                            Войти
+                        </button>
+
+                        <div class="auth-links">
+                            <a href="/register.html">
+                                <i class="fas fa-user-plus"></i>
+                                Нет аккаунта? Зарегистрироваться
+                            </a>
+                            <a href="/forgot-password.html">
+                                <i class="fas fa-question-circle"></i>
+                                Забыли пароль?
+                            </a>
+                        </div>
+                    </form>
+
+                    <!-- Тестовые данные -->
+                    <div class="test-credentials">
+                        <h4>
+                            <i class="fas fa-info-circle"></i>
+                            Тестовые данные
+                        </h4>
+                        <p><strong>Администратор:</strong> admin@movie.com / admin123</p>
+                        <p><strong>Пользователь:</strong> alex@example.com / password123</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="auth-sidebar">
+                <div class="auth-features">
+                    <h3>
+                        <i class="fas fa-star"></i>
+                        Преимущества регистрации
+                    </h3>
+                    <ul>
+                        <li>
+                            <i class="fas fa-check"></i>
+                            Оставляйте отзывы к фильмам
+                        </li>
+                        <li>
+                            <i class="fas fa-check"></i>
+                            Составляйте списки для просмотра
+                        </li>
+                        <li>
+                            <i class="fas fa-check"></i>
+                            Получайте персональные рекомендации
+                        </li>
+                        <li>
+                            <i class="fas fa-check"></i>
+                            Участвуйте в обсуждениях
+                        </li>
+                        <li>
+                            <i class="fas fa-check"></i>
+                            Отслеживайте историю просмотров
+                        </li>
+                    </ul>
+
+                    <a href="/register.html" class="btn btn-secondary btn-block">
+                        <i class="fas fa-user-plus"></i>
+                        Создать аккаунт
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+
+<!-- Подвал -->
+<footer class="footer">
+    <div class="container">
+        <div class="footer-content">
+            <div class="footer-section">
+                <h3>
+                    <i class="fas fa-film"></i>
+                    Киносайт
+                </h3>
+                <p>Крупнейшая база фильмов с отзывами и рейтингами</p>
+            </div>
+
+            <div class="footer-section">
+                <h4>Навигация</h4>
+                <a href="/">Главная</a>
+                <a href="/catalog.html">Каталог</a>
+                <a href="/top.html">Топ фильмов</a>
+                <a href="/about.html">О проекте</a>
+            </div>
+
+            <div class="footer-section">
+                <h4>Пользователю</h4>
+                <a href="/login.html">Войти</a>
+                <a href="/register.html">Регистрация</a>
+                <a href="/profile.html">Личный кабинет</a>
+                <a href="/help.html">Помощь</a>
+            </div>
+
+            <div class="footer-section">
+                <h4>Контакты</h4>
+                <p><i class="fas fa-envelope"></i> support@movie-site.com</p>
+                <p><i class="fas fa-phone"></i> +7 (999) 123-45-67</p>
+            </div>
+        </div>
+
+        <div class="footer-bottom">
+            <p>&copy; 2024 Киносайт. Все права защищены.</p>
+        </div>
+    </div>
+</footer>
+
+<script src="js/main.js"></script>
+<script src="js/auth.js"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        updateNavigation();
+
+        // Если пользователь уже авторизован, перенаправляем на главную
+        const user = AuthManager.getCurrentUser();
+        if (user) {
+            window.location.href = '/';
+        }
+    });
+
+    async function login(event) {
+        event.preventDefault();
+
+        const email = document.getElementById('email').value;
+        const password = document.getElementById('password').value;
+
+        // Сброс ошибок
+        document.getElementById('emailError').textContent = '';
+        document.getElementById('passwordError').textContent = '';
+
+        try {
+            const user = await AuthManager.login(email, password);
+
+            if (user) {
+                Utils.showNotification('Вход выполнен успешно!', 'success');
+                setTimeout(() => {
+                    window.location.href = '/';
+                }, 1000);
+            } else {
+                document.getElementById('passwordError').textContent = 'Неверный email или пароль';
+            }
+        } catch (error) {
+            Utils.showNotification('Ошибка при входе: ' + error.message, 'error');
+        }
+    }
+</script>
+</body>
+</html>

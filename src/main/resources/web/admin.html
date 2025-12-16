@@ -1,0 +1,678 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Админ панель - Киносайт</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+<!-- Навигация -->
+<header>
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="logo">
+                <a href="/">
+                    <i class="fas fa-film"></i>
+                    <span>Киносайт</span>
+                </a>
+            </div>
+
+            <div class="nav-menu" id="navMenu">
+                <a href="/" class="nav-link">
+                    <i class="fas fa-home"></i>
+                    <span>Главная</span>
+                </a>
+                <a href="/catalog.html" class="nav-link">
+                    <i class="fas fa-list"></i>
+                    <span>Каталог</span>
+                </a>
+                <a href="/admin.html" class="nav-link active">
+                    <i class="fas fa-cog"></i>
+                    <span>Админ панель</span>
+                </a>
+            </div>
+
+            <div class="nav-search">
+                <input type="text" id="globalSearch" placeholder="Поиск фильмов...">
+                <button onclick="searchMovies()">
+                    <i class="fas fa-search"></i>
+                </button>
+            </div>
+
+            <div class="nav-auth" id="authSection">
+                <!-- Будет заполнено JavaScript -->
+            </div>
+
+            <button class="nav-toggle" onclick="toggleMenu()">
+                <i class="fas fa-bars"></i>
+            </button>
+        </div>
+    </nav>
+</header>
+
+<!-- Основной контент -->
+<main class="admin-panel">
+    <div class="container">
+        <!-- Загрузка -->
+        <div id="loading" class="loading">
+            <div class="loading-spinner"></div>
+            <p>Загрузка админ панели...</p>
+        </div>
+
+        <!-- Доступ запрещен -->
+        <div id="accessDenied" class="error-content" style="display: none;">
+            <i class="fas fa-ban"></i>
+            <h2>Доступ запрещен</h2>
+            <p>У вас нет прав для доступа к админ панели</p>
+            <a href="/" class="btn btn-primary">
+                <i class="fas fa-arrow-left"></i>
+                Вернуться на главную
+            </a>
+        </div>
+
+        <!-- Админ панель -->
+        <div id="adminContent" style="display: none;">
+            <!-- Заголовок -->
+            <div class="admin-header">
+                <h1 class="page-title">
+                    <i class="fas fa-cog"></i>
+                    Административная панель
+                </h1>
+                <div class="admin-stats">
+                        <span class="stat-item">
+                            <i class="fas fa-users"></i>
+                            <span id="totalUsers">0</span> пользователей
+                        </span>
+                    <span class="stat-item">
+                            <i class="fas fa-film"></i>
+                            <span id="totalMovies">0</span> фильмов
+                        </span>
+                    <span class="stat-item">
+                            <i class="fas fa-comment"></i>
+                            <span id="totalReviews">0</span> отзывов
+                        </span>
+                    <span class="stat-item">
+                            <i class="fas fa-clock"></i>
+                            <span id="pendingReviews">0</span> на модерации
+                        </span>
+                </div>
+            </div>
+
+            <!-- Навигация по админ панели -->
+            <div class="admin-nav">
+                <button class="tab-btn active" onclick="switchAdminTab('dashboard')">
+                    <i class="fas fa-tachometer-alt"></i>
+                    Дашборд
+                </button>
+                <button class="tab-btn" onclick="switchAdminTab('movies')">
+                    <i class="fas fa-film"></i>
+                    Фильмы
+                </button>
+                <button class="tab-btn" onclick="switchAdminTab('reviews')">
+                    <i class="fas fa-star"></i>
+                    Отзывы
+                </button>
+                <button class="tab-btn" onclick="switchAdminTab('users')">
+                    <i class="fas fa-users"></i>
+                    Пользователи
+                </button>
+                <button class="tab-btn" onclick="switchAdminTab('genres')">
+                    <i class="fas fa-tags"></i>
+                    Жанры
+                </button>
+                <button class="tab-btn" onclick="switchAdminTab('settings')">
+                    <i class="fas fa-cogs"></i>
+                    Настройки
+                </button>
+            </div>
+
+            <!-- Контент вкладок -->
+            <div class="admin-tabs-content">
+                <!-- Дашборд -->
+                <div id="dashboardTab" class="admin-tab-pane active">
+                    <div class="dashboard-grid">
+                        <div class="dashboard-card">
+                            <h3>
+                                <i class="fas fa-chart-line"></i>
+                                Статистика
+                            </h3>
+                            <div class="stats-grid">
+                                <div class="stat-item">
+                                    <div class="stat-value" id="todayUsers">0</div>
+                                    <div class="stat-label">Новых пользователей сегодня</div>
+                                </div>
+                                <div class="stat-item">
+                                    <div class="stat-value" id="todayReviews">0</div>
+                                    <div class="stat-label">Новых отзывов сегодня</div>
+                                </div>
+                                <div class="stat-item">
+                                    <div class="stat-value" id="avgRating">0</div>
+                                    <div class="stat-label">Средний рейтинг фильмов</div>
+                                </div>
+                                <div class="stat-item">
+                                    <div class="stat-value" id="activeUsers">0</div>
+                                    <div class="stat-label">Активных пользователей</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="dashboard-card">
+                            <h3>
+                                <i class="fas fa-bell"></i>
+                                Последние действия
+                            </h3>
+                            <div id="recentActivity" class="activity-list">
+                                <!-- Действия загружаются через JavaScript -->
+                                <div class="activity-item">
+                                    <i class="fas fa-user-plus"></i>
+                                    <div class="activity-content">
+                                        <div class="activity-text">Новый пользователь зарегистрирован</div>
+                                        <div class="activity-time">Только что</div>
+                                    </div>
+                                </div>
+                                <div class="activity-item">
+                                    <i class="fas fa-star"></i>
+                                    <div class="activity-content">
+                                        <div class="activity-text">Добавлен новый отзыв к фильму "Интерстеллар"</div>
+                                        <div class="activity-time">10 минут назад</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="dashboard-card">
+                            <h3>
+                                <i class="fas fa-exclamation-triangle"></i>
+                                Требуют внимания
+                            </h3>
+                            <div id="attentionItems" class="attention-list">
+                                <!-- Элементы требующие внимания -->
+                                <div class="attention-item">
+                                    <i class="fas fa-flag"></i>
+                                    <div class="attention-content">
+                                        <div class="attention-text">5 отзывов ожидают модерации</div>
+                                        <button class="btn btn-small" onclick="switchAdminTab('reviews')">
+                                            Проверить
+                                        </button>
+                                    </div>
+                                </div>
+                                <div class="attention-item">
+                                    <i class="fas fa-user-slash"></i>
+                                    <div class="attention-content">
+                                        <div class="attention-text">2 пользователя заблокированы</div>
+                                        <button class="btn btn-small" onclick="switchAdminTab('users')">
+                                            Управление
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Управление фильмами -->
+                <div id="moviesTab" class="admin-tab-pane">
+                    <div class="tab-header">
+                        <h2>
+                            <i class="fas fa-film"></i>
+                            Управление фильмами
+                        </h2>
+                        <button class="btn btn-primary" onclick="showAddMovieModal()">
+                            <i class="fas fa-plus"></i>
+                            Добавить фильм
+                        </button>
+                    </div>
+
+                    <div class="search-bar">
+                        <input type="text" id="searchMovies" placeholder="Поиск фильмов..."
+                               oninput="searchAdminMovies()">
+                        <button class="btn btn-secondary">
+                            <i class="fas fa-search"></i>
+                        </button>
+                    </div>
+
+                    <table class="admin-table">
+                        <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Постер</th>
+                            <th>Название</th>
+                            <th>Режиссер</th>
+                            <th>Год</th>
+                            <th>Рейтинг</th>
+                            <th>Отзывы</th>
+                            <th>Действия</th>
+                        </tr>
+                        </thead>
+                        <tbody id="moviesTable">
+                        <!-- Фильмы загружаются через JavaScript -->
+                        <tr>
+                            <td colspan="8" class="text-center">
+                                <div class="loading">
+                                    <div class="loading-spinner"></div>
+                                    <p>Загрузка фильмов...</p>
+                                </div>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+
+                    <div class="pagination">
+                        <button id="prevMoviesPage" class="page-btn" onclick="prevMoviesPage()" disabled>
+                            <i class="fas fa-chevron-left"></i>
+                            Назад
+                        </button>
+                        <div class="page-info">
+                            Страница <span id="currentMoviesPage">1</span> из <span id="totalMoviesPages">1</span>
+                        </div>
+                        <button id="nextMoviesPage" class="page-btn" onclick="nextMoviesPage()" disabled>
+                            Вперед
+                            <i class="fas fa-chevron-right"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Модерация отзывов -->
+                <div id="reviewsTab" class="admin-tab-pane">
+                    <div class="tab-header">
+                        <h2>
+                            <i class="fas fa-star"></i>
+                            Модерация отзывов
+                        </h2>
+                        <div class="tab-filter">
+                            <select id="reviewFilter" onchange="filterReviews()">
+                                <option value="pending">Ожидают модерации</option>
+                                <option value="all">Все отзывы</option>
+                                <option value="recent">Последние</option>
+                                <option value="reported">Жалобы</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <table class="admin-table">
+                        <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Пользователь</th>
+                            <th>Фильм</th>
+                            <th>Оценка</th>
+                            <th>Комментарий</th>
+                            <th>Дата</th>
+                            <th>Статус</th>
+                            <th>Действия</th>
+                        </tr>
+                        </thead>
+                        <tbody id="reviewsTable">
+                        <!-- Отзывы загружаются через JavaScript -->
+                        <tr>
+                            <td colspan="8" class="text-center">
+                                <div class="loading">
+                                    <div class="loading-spinner"></div>
+                                    <p>Загрузка отзывов...</p>
+                                </div>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- Управление пользователями -->
+                <div id="usersTab" class="admin-tab-pane">
+                    <div class="tab-header">
+                        <h2>
+                            <i class="fas fa-users"></i>
+                            Управление пользователями
+                        </h2>
+                        <div class="tab-filter">
+                            <select id="userFilter" onchange="filterUsers()">
+                                <option value="all">Все пользователи</option>
+                                <option value="active">Активные</option>
+                                <option value="inactive">Неактивные</option>
+                                <option value="admins">Администраторы</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <table class="admin-table">
+                        <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Имя пользователя</th>
+                            <th>Email</th>
+                            <th>Роль</th>
+                            <th>Дата регистрации</th>
+                            <th>Статус</th>
+                            <th>Отзывы</th>
+                            <th>Действия</th>
+                        </tr>
+                        </thead>
+                        <tbody id="usersTable">
+                        <!-- Пользователи загружаются через JavaScript -->
+                        <tr>
+                            <td colspan="8" class="text-center">
+                                <div class="loading">
+                                    <div class="loading-spinner"></div>
+                                    <p>Загрузка пользователей...</p>
+                                </div>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+
+                    <div class="pagination">
+                        <button id="prevUsersPage" class="page-btn" onclick="prevUsersPage()" disabled>
+                            <i class="fas fa-chevron-left"></i>
+                            Назад
+                        </button>
+                        <div class="page-info">
+                            Страница <span id="currentUsersPage">1</span> из <span id="totalUsersPages">1</span>
+                        </div>
+                        <button id="nextUsersPage" class="page-btn" onclick="nextUsersPage()" disabled>
+                            Вперед
+                            <i class="fas fa-chevron-right"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Управление жанрами -->
+                <div id="genresTab" class="admin-tab-pane">
+                    <div class="tab-header">
+                        <h2>
+                            <i class="fas fa-tags"></i>
+                            Управление жанрами
+                        </h2>
+                        <button class="btn btn-primary" onclick="showAddGenreModal()">
+                            <i class="fas fa-plus"></i>
+                            Добавить жанр
+                        </button>
+                    </div>
+
+                    <div class="genres-grid" id="genresGrid">
+                        <!-- Жанры загружаются через JavaScript -->
+                        <div class="loading">
+                            <div class="loading-spinner"></div>
+                            <p>Загрузка жанров...</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Настройки системы -->
+                <div id="settingsTab" class="admin-tab-pane">
+                    <div class="tab-header">
+                        <h2>
+                            <i class="fas fa-cogs"></i>
+                            Настройки системы
+                        </h2>
+                    </div>
+
+                    <div class="settings-form">
+                        <div class="form-group">
+                            <label for="siteName">Название сайта</label>
+                            <input type="text" id="siteName" class="form-control" value="Киносайт">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="siteDescription">Описание сайта</label>
+                            <textarea id="siteDescription" class="form-control" rows="3">
+Крупнейшая база фильмов с отзывами и рейтингами
+                                </textarea>
+                        </div>
+
+                        <div class="form-group">
+                            <label>Настройки модерации</label>
+                            <div class="form-check">
+                                <input type="checkbox" id="moderateReviews" class="form-check-input" checked>
+                                <label for="moderateReviews" class="form-check-label">
+                                    Модерировать отзывы перед публикацией
+                                </label>
+                            </div>
+                            <div class="form-check">
+                                <input type="checkbox" id="autoApprove" class="form-check-input">
+                                <label for="autoApprove" class="form-check-label">
+                                    Автоматически одобрять отзывы от доверенных пользователей
+                                </label>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label>Настройки безопасности</label>
+                            <div class="form-check">
+                                <input type="checkbox" id="requireEmailVerification" class="form-check-input">
+                                <label for="requireEmailVerification" class="form-check-label">
+                                    Требовать подтверждение email при регистрации
+                                </label>
+                            </div>
+                            <div class="form-check">
+                                <input type="checkbox" id="allowRegistration" class="form-check-input" checked>
+                                <label for="allowRegistration" class="form-check-label">
+                                    Разрешить регистрацию новых пользователей
+                                </label>
+                            </div>
+                        </div>
+
+                        <button class="btn btn-primary" onclick="saveSystemSettings()">
+                            <i class="fas fa-save"></i>
+                            Сохранить настройки
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+
+<!-- Модальное окно добавления фильма -->
+<div id="addMovieModal" class="modal" style="display: none;">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h2>
+                <i class="fas fa-plus-circle"></i>
+                Добавить новый фильм
+            </h2>
+            <button class="modal-close" onclick="closeAddMovieModal()">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+
+        <div class="modal-body">
+            <form id="addMovieForm" onsubmit="addMovie(event)">
+                <div class="form-group">
+                    <label for="adminMovieTitle">Название фильма *</label>
+                    <input type="text" id="adminMovieTitle" class="form-control" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="adminMovieDirector">Режиссер</label>
+                    <input type="text" id="adminMovieDirector" class="form-control">
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="adminMovieYear">Год выпуска *</label>
+                        <input type="number" id="adminMovieYear" class="form-control" min="1900" max="2024" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="adminMovieDuration">Продолжительность (мин)</label>
+                        <input type="number" id="adminMovieDuration" class="form-control" min="1" max="600">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="adminMovieDescription">Описание</label>
+                    <textarea id="adminMovieDescription" class="form-control" rows="4"></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label for="adminMoviePosterUrl">URL постера</label>
+                    <input type="url" id="adminMoviePosterUrl" class="form-control"
+                           placeholder="https://example.com/poster.jpg">
+                </div>
+
+                <div class="form-group">
+                    <label for="adminMovieGenres">Жанры</label>
+                    <div class="genres-checkboxes" id="adminGenresList">
+                        <!-- Жанры загружаются через JavaScript -->
+                    </div>
+                </div>
+
+                <div class="form-actions">
+                    <button type="button" class="btn btn-secondary" onclick="closeAddMovieModal()">
+                        Отмена
+                    </button>
+                    <button type="submit" class="btn btn-primary">
+                        <i class="fas fa-save"></i>
+                        Сохранить фильм
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- Модальное окно редактирования фильма -->
+<div id="editMovieModal" class="modal" style="display: none;">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h2>
+                <i class="fas fa-edit"></i>
+                Редактировать фильм
+            </h2>
+            <button class="modal-close" onclick="closeEditMovieModal()">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+
+        <div class="modal-body">
+            <form id="editMovieForm" onsubmit="updateAdminMovie(event)">
+                <input type="hidden" id="editMovieId">
+
+                <div class="form-group">
+                    <label for="editAdminMovieTitle">Название фильма *</label>
+                    <input type="text" id="editAdminMovieTitle" class="form-control" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="editAdminMovieDirector">Режиссер</label>
+                    <input type="text" id="editAdminMovieDirector" class="form-control">
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="editAdminMovieYear">Год выпуска *</label>
+                        <input type="number" id="editAdminMovieYear" class="form-control" min="1900" max="2024" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="editAdminMovieDuration">Продолжительность (мин)</label>
+                        <input type="number" id="editAdminMovieDuration" class="form-control" min="1" max="600">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="editAdminMovieDescription">Описание</label>
+                    <textarea id="editAdminMovieDescription" class="form-control" rows="4"></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label for="editAdminMoviePosterUrl">URL постера</label>
+                    <input type="url" id="editAdminMoviePosterUrl" class="form-control">
+                </div>
+
+                <div class="form-actions">
+                    <button type="button" class="btn btn-secondary" onclick="closeEditMovieModal()">
+                        Отмена
+                    </button>
+                    <button type="submit" class="btn btn-primary">
+                        <i class="fas fa-save"></i>
+                        Сохранить изменения
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- Модальное окно добавления жанра -->
+<div id="addGenreModal" class="modal" style="display: none;">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h2>
+                <i class="fas fa-plus-circle"></i>
+                Добавить новый жанр
+            </h2>
+            <button class="modal-close" onclick="closeAddGenreModal()">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+
+        <div class="modal-body">
+            <form id="addGenreForm" onsubmit="addGenre(event)">
+                <div class="form-group">
+                    <label for="genreName">Название жанра *</label>
+                    <input type="text" id="genreName" class="form-control"
+                           placeholder="Например: Фэнтези, Документальный" required>
+                </div>
+
+                <div class="form-actions">
+                    <button type="button" class="btn btn-secondary" onclick="closeAddGenreModal()">
+                        Отмена
+                    </button>
+                    <button type="submit" class="btn btn-primary">
+                        <i class="fas fa-save"></i>
+                        Добавить жанр
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- Подвал -->
+<footer class="footer">
+    <div class="container">
+        <div class="footer-content">
+            <div class="footer-section">
+                <h3>
+                    <i class="fas fa-film"></i>
+                    Киносайт
+                </h3>
+                <p>Крупнейшая база фильмов с отзывами и рейтингами</p>
+            </div>
+
+            <div class="footer-section">
+                <h4>Навигация</h4>
+                <a href="/">Главная</a>
+                <a href="/catalog.html">Каталог</a>
+                <a href="/top.html">Топ фильмов</a>
+                <a href="/about.html">О проекте</a>
+            </div>
+
+            <div class="footer-section">
+                <h4>Пользователю</h4>
+                <a href="/login.html">Войти</a>
+                <a href="/register.html">Регистрация</a>
+                <a href="/profile.html">Личный кабинет</a>
+                <a href="/help.html">Помощь</a>
+            </div>
+
+            <div class="footer-section">
+                <h4>Контакты</h4>
+                <p><i class="fas fa-envelope"></i> support@movie-site.com</p>
+                <p><i class="fas fa-phone"></i> +7 (999) 123-45-67</p>
+            </div>
+        </div>
+
+        <div class="footer-bottom">
+            <p>&copy; 2024 Киносайт. Все права защищены.</p>
+        </div>
+    </div>
+</footer>
+
+<script src="js/main.js"></script>
+<script src="js/auth.js"></script>
+<script src="js/admin.js"></script>
+</body>
+</html>

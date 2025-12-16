@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Киносайт - Главная</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+<!-- Навигация -->
+<header>
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="logo">
+                <a href="/">
+                    <i class="fas fa-film"></i>
+                    <span>Киносайт</span>
+                </a>
+            </div>
+
+            <div class="nav-menu" id="navMenu">
+                <a href="/" class="nav-link active">
+                    <i class="fas fa-home"></i>
+                    <span>Главная</span>
+                </a>
+                <a href="/catalog.html" class="nav-link">
+                    <i class="fas fa-list"></i>
+                    <span>Каталог</span>
+                </a>
+                <a href="/top.html" class="nav-link">
+                    <i class="fas fa-star"></i>
+                    <span>Топ фильмов</span>
+                </a>
+            </div>
+
+            <div class="nav-search">
+                <input type="text" id="globalSearch" placeholder="Поиск фильмов...">
+                <button onclick="searchMovies()">
+                    <i class="fas fa-search"></i>
+                </button>
+            </div>
+
+            <div class="nav-auth" id="authSection">
+                <!-- Будет заполнено JavaScript -->
+            </div>
+
+            <button class="nav-toggle" onclick="toggleMenu()">
+                <i class="fas fa-bars"></i>
+            </button>
+        </div>
+    </nav>
+</header>
+
+<!-- Основной контент -->
+<main>
+    <!-- Герой секция -->
+    <section class="hero">
+        <div class="hero-content">
+            <h1>Добро пожаловать в мир кино!</h1>
+            <p>Откройте для себя тысячи фильмов, оставляйте отзывы и делитесь мнениями</p>
+            <div class="hero-buttons">
+                <a href="/catalog.html" class="btn btn-primary">
+                    <i class="fas fa-play-circle"></i>
+                    Смотреть каталог
+                </a>
+                <a href="/register.html" class="btn btn-secondary">
+                    <i class="fas fa-user-plus"></i>
+                    Присоединиться
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Рекомендуемые фильмы -->
+    <section class="section">
+        <div class="container">
+            <h2 class="section-title">
+                <i class="fas fa-fire"></i>
+                Рекомендуемые фильмы
+            </h2>
+            <div id="recommendedMovies" class="movies-grid">
+                <!-- Загружается через JavaScript -->
+            </div>
+        </div>
+    </section>
+
+    <!-- Новые фильмы -->
+    <section class="section section-alt">
+        <div class="container">
+            <h2 class="section-title">
+                <i class="fas fa-newspaper"></i>
+                Новые поступления
+            </h2>
+            <div id="newMovies" class="movies-grid">
+                <!-- Загружается через JavaScript -->
+            </div>
+        </div>
+    </section>
+
+    <!-- Последние отзывы -->
+    <section class="section">
+        <div class="container">
+            <h2 class="section-title">
+                <i class="fas fa-comments"></i>
+                Последние отзывы
+            </h2>
+            <div id="recentReviews" class="reviews-list">
+                <!-- Загружается через JavaScript -->
+            </div>
+        </div>
+    </section>
+
+    <!-- Статистика -->
+    <section class="section section-alt">
+        <div class="container">
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <i class="fas fa-film"></i>
+                    <h3 id="moviesCount">0</h3>
+                    <p>Фильмов в каталоге</p>
+                </div>
+                <div class="stat-card">
+                    <i class="fas fa-users"></i>
+                    <h3 id="usersCount">0</h3>
+                    <p>Зарегистрированных пользователей</p>
+                </div>
+                <div class="stat-card">
+                    <i class="fas fa-star"></i>
+                    <h3 id="reviewsCount">0</h3>
+                    <p>Отзывов и оценок</p>
+                </div>
+                <div class="stat-card">
+                    <i class="fas fa-calendar-alt"></i>
+                    <h3 id="yearsCount">0</h3>
+                    <p>Лет кинематографа</p>
+                </div>
+            </div>
+        </div>
+    </section>
+</main>
+
+<!-- Подвал -->
+<footer class="footer">
+    <div class="container">
+        <div class="footer-content">
+            <div class="footer-section">
+                <h3>
+                    <i class="fas fa-film"></i>
+                    Киносайт
+                </h3>
+                <p>Крупнейшая база фильмов с отзывами и рейтингами</p>
+            </div>
+
+            <div class="footer-section">
+                <h4>Навигация</h4>
+                <a href="/">Главная</a>
+                <a href="/catalog.html">Каталог</a>
+                <a href="/top.html">Топ фильмов</a>
+                <a href="/about.html">О проекте</a>
+            </div>
+
+            <div class="footer-section">
+                <h4>Пользователю</h4>
+                <a href="/login.html">Войти</a>
+                <a href="/register.html">Регистрация</a>
+                <a href="/profile.html">Личный кабинет</a>
+                <a href="/help.html">Помощь</a>
+            </div>
+
+            <div class="footer-section">
+                <h4>Контакты</h4>
+                <a href="mailto:support@movie-site.com"><i class="fas fa-envelope"></i> support@movie-site.com</a>
+                <a href="tel:+7 (999) 123-45-67"><i class="fas fa-phone"></i> +7 (999) 123-45-67</a>
+            </div>
+        </div>
+
+        <div class="footer-bottom">
+            <p>&copy; 2025 Киносайт. Все права защищены.</p>
+        </div>
+    </div>
+</footer>
+
+<script src="js/main.js"></script>
+<script src="js/auth.js"></script>
+<script>
+    // Загрузка данных для главной страницы
+    document.addEventListener('DOMContentLoaded', async () => {
+        // Загрузка рекомендуемых фильмов
+        await loadRecommendedMovies();
+
+        // Загрузка новых фильмов
+        await loadNewMovies();
+
+        // Загрузка последних отзывов
+        await loadRecentReviews();
+
+        // Загрузка статистики
+        await loadStats();
+
+        // Обновление навигации
+        updateNavigation();
+    });
+
+    async function loadRecommendedMovies() {
+        try {
+            const response = await fetch('/api/movies/top?limit=4');
+            const result = await response.json();
+
+            if (result.success) {
+                const container = document.getElementById('recommendedMovies');
+                container.innerHTML = result.data.map(movie => `
+                    <div class="movie-card">
+                        <div class="movie-poster">
+                            <img src="${movie.posterUrl || 'https://via.placeholder.com/300x450?text=No+Poster'}"
+                                 alt="${movie.title}"
+                                 onerror="this.src='https://via.placeholder.com/300x450?text=No+Poster'">
+                            <div class="movie-rating">
+                                <i class="fas fa-star"></i>
+                                ${movie.averageRating ? movie.averageRating.toFixed(1) : 'Н/Д'}
+                            </div>
+                        </div>
+                        <div class="movie-info">
+                            <h3 class="movie-title">${movie.title}</h3>
+                            <p class="movie-director">${movie.director || 'Режиссер не указан'}</p>
+                            <p class="movie-year">${movie.year || 'Год не указан'}</p>
+                            <a href="/movie.html?id=${movie.id}" class="btn btn-small">
+                                <i class="fas fa-info-circle"></i>
+                                Подробнее
+                            </a>
+                        </div>
+                    </div>
+                `).join('');
+            }
+        } catch (error) {
+            console.error('Ошибка загрузки рекомендуемых фильмов:', error);
+        }
+    }
+
+    async function loadNewMovies() {
+        try {
+            const response = await fetch('/api/movies?sortBy=created_at&order=desc&limit=4');
+            const result = await response.json();
+
+            if (result.success) {
+                const container = document.getElementById('newMovies');
+                container.innerHTML = result.data.map(movie => `
+                    <div class="movie-card">
+                        <div class="movie-poster">
+                            <img src="${movie.posterUrl || 'https://via.placeholder.com/300x450?text=No+Poster'}"
+                                 alt="${movie.title}"
+                                 onerror="this.src='https://via.placeholder.com/300x450?text=No+Poster'">
+                            <div class="movie-rating">
+                                <i class="fas fa-star"></i>
+                                ${movie.averageRating ? movie.averageRating.toFixed(1) : 'Н/Д'}
+                            </div>
+                        </div>
+                        <div class="movie-info">
+                            <h3 class="movie-title">${movie.title}</h3>
+                            <p class="movie-director">${movie.director || 'Режиссер не указан'}</p>
+                            <p class="movie-year">${movie.year || 'Год не указан'}</p>
+                            <a href="/movie.html?id=${movie.id}" class="btn btn-small">
+                                <i class="fas fa-info-circle"></i>
+                                Подробнее
+                            </a>
+                        </div>
+                    </div>
+                `).join('');
+            }
+        } catch (error) {
+            console.error('Ошибка загрузки новых фильмов:', error);
+        }
+    }
+
+    async function loadRecentReviews() {
+        try {
+            // В реальном приложении здесь должен быть endpoint для последних отзывов
+            // Пока используем заглушку
+            const container = document.getElementById('recentReviews');
+            container.innerHTML = `
+                <div class="review-item">
+                    <div class="review-header">
+                        <span class="review-user">Алексей Петров</span>
+                        <span class="review-movie">«Интерстеллар»</span>
+                        <div class="review-rating">
+                            <i class="fas fa-star"></i> 9.5
+                        </div>
+                    </div>
+                    <p class="review-text">Потрясающий фильм! Отличная научная фантастика с глубоким смыслом.</p>
+                    <span class="review-date">2 часа назад</span>
+                </div>
+                <div class="review-item">
+                    <div class="review-header">
+                        <span class="review-user">Мария Иванова</span>
+                        <span class="review-movie">«Начало»</span>
+                        <div class="review-rating">
+                            <i class="fas fa-star"></i> 8.7
+                        </div>
+                    </div>
+                    <p class="review-text">Умный и захватывающий триллер. Нолан - гений!</p>
+                    <span class="review-date">Вчера</span>
+                </div>
+            `;
+        } catch (error) {
+            console.error('Ошибка загрузки отзывов:', error);
+        }
+    }
+
+    async function loadStats() {
+        // Заглушка для статистики
+        document.getElementById('moviesCount').textContent = '1250';
+        document.getElementById('usersCount').textContent = '5432';
+        document.getElementById('reviewsCount').textContent = '8921';
+        document.getElementById('yearsCount').textContent = '130';
+    }
+
+    function toggleMenu() {
+        const navMenu = document.getElementById('navMenu');
+        navMenu.classList.toggle('show');
+    }
+
+    function searchMovies() {
+        const query = document.getElementById('globalSearch').value.trim();
+        if (query) {
+            window.location.href = `/catalog.html?q=${encodeURIComponent(query)}`;
+        }
+    }
+</script>
+</body>
+</html>

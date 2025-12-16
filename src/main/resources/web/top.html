@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Топ фильмов - Киносайт</title>
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+<!-- Навигация -->
+<header>
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="logo">
+                <a href="/">
+                    <i class="fas fa-film"></i>
+                    <span>Киносайт</span>
+                </a>
+            </div>
+
+            <div class="nav-menu" id="navMenu">
+                <a href="/" class="nav-link">
+                    <i class="fas fa-home"></i>
+                    <span>Главная</span>
+                </a>
+                <a href="/catalog.html" class="nav-link">
+                    <i class="fas fa-list"></i>
+                    <span>Каталог</span>
+                </a>
+                <a href="/top.html" class="nav-link active">
+                    <i class="fas fa-star"></i>
+                    <span>Топ фильмов</span>
+                </a>
+            </div>
+
+            <div class="nav-search">
+                <input type="text" id="globalSearch" placeholder="Поиск фильмов...">
+                <button onclick="searchMovies()">
+                    <i class="fas fa-search"></i>
+                </button>
+            </div>
+
+            <div class="nav-auth" id="authSection">
+                <!-- Будет заполнено JavaScript -->
+            </div>
+
+            <button class="nav-toggle" onclick="toggleMenu()">
+                <i class="fas fa-bars"></i>
+            </button>
+        </div>
+    </nav>
+</header>
+
+<!-- Основной контент -->
+<main class="top-page">
+    <div class="container">
+        <div class="page-header">
+            <h1 class="page-title">
+                <i class="fas fa-trophy"></i>
+                Топ фильмов по рейтингу
+            </h1>
+            <p class="page-subtitle">Лучшие фильмы по оценкам наших пользователей</p>
+        </div>
+
+        <!-- Фильтры -->
+        <div class="top-filters">
+            <div class="filter-group">
+                <label for="timePeriod">Период</label>
+                <select id="timePeriod" onchange="loadTopMovies()">
+                    <option value="all">За все время</option>
+                    <option value="year">За год</option>
+                    <option value="month">За месяц</option>
+                    <option value="week">За неделю</option>
+                </select>
+            </div>
+
+            <div class="filter-group">
+                <label for="minVotes">Минимальное количество отзывов</label>
+                <input type="number" id="minVotes" value="10" min="1" onchange="loadTopMovies()">
+            </div>
+
+            <div class="filter-group">
+                <label for="genreFilter">Жанр</label>
+                <select id="genreFilter" onchange="loadTopMovies()">
+                    <option value="">Все жанры</option>
+                    <!-- Жанры загружаются через JavaScript -->
+                </select>
+            </div>
+        </div>
+
+        <!-- Топ фильмов -->
+        <div id="topMoviesContainer">
+            <div class="loading">
+                <div class="loading-spinner"></div>
+                <p>Загрузка топ фильмов...</p>
+            </div>
+        </div>
+
+        <!-- Топ по жанрам -->
+        <section class="section">
+            <h2 class="section-title">
+                <i class="fas fa-tags"></i>
+                Топ по жанрам
+            </h2>
+
+            <div class="genres-top" id="genresTop">
+                <!-- Топ по жанрам загружается через JavaScript -->
+            </div>
+        </section>
+
+        <!-- Самые обсуждаемые -->
+        <section class="section section-alt">
+            <h2 class="section-title">
+                <i class="fas fa-comments"></i>
+                Самые обсуждаемые фильмы
+            </h2>
+
+            <div id="mostDiscussed" class="movies-grid">
+                <!-- Обсуждаемые фильмы загружаются через JavaScript -->
+            </div>
+        </section>
+
+        <!-- Статистика -->
+        <section class="section">
+            <h2 class="section-title">
+                <i class="fas fa-chart-bar"></i>
+                Статистика оценок
+            </h2>
+
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <i class="fas fa-star"></i>
+                    <h3 id="totalRatings">0</h3>
+                    <p>Всего оценок</p>
+                </div>
+                <div class="stat-card">
+                    <i class="fas fa-users"></i>
+                    <h3 id="ratingUsers">0</h3>
+                    <p>Пользователей оценили фильмы</p>
+                </div>
+                <div class="stat-card">
+                    <i class="fas fa-film"></i>
+                    <h3 id="ratedMovies">0</h3>
+                    <p>Фильмов с оценками</p>
+                </div>
+                <div class="stat-card">
+                    <i class="fas fa-calculator"></i>
+                    <h3 id="averageAll">0.0</h3>
+                    <p>Средняя оценка всех фильмов</p>
+                </div>
+            </div>
+        </section>
+    </div>
+</main>
+
+<!-- Подвал -->
+<footer class="footer">
+    <div class="container">
+        <div class="footer-content">
+            <div class="footer-section">
+                <h3>
+                    <i class="fas fa-film"></i>
+                    Киносайт
+                </h3>
+                <p>Крупнейшая база фильмов с отзывами и рейтингами</p>
+            </div>
+
+            <div class="footer-section">
+                <h4>Навигация</h4>
+                <a href="/">Главная</a>
+                <a href="/catalog.html">Каталог</a>
+                <a href="/top.html">Топ фильмов</a>
+                <a href="/about.html">О проекте</a>
+            </div>
+
+            <div class="footer-section">
+                <h4>Пользователю</h4>
+                <a href="/login.html">Войти</a>
+                <a href="/register.html">Регистрация</a>
+                <a href="/profile.html">Личный кабинет</a>
+                <a href="/help.html">Помощь</a>
+            </div>
+
+            <div class="footer-section">
+                <h4>Контакты</h4>
+                <p><i class="fas fa-envelope"></i> support@movie-site.com</p>
+                <p><i class="fas fa-phone"></i> +7 (999) 123-45-67</p>
+            </div>
+        </div>
+
+        <div class="footer-bottom">
+            <p>&copy; 2024 Киносайт. Все права защищены.</p>
+        </div>
+    </div>
+</footer>
+
+<script src="js/main.js"></script>
+<script src="js/auth.js"></script>
+<script src="js/top.js"></script>
+</body>
+</html>

@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Регистрация - Киносайт</title>
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+<!-- Навигация -->
+<header>
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="logo">
+                <a href="/">
+                    <i class="fas fa-film"></i>
+                    <span>Киносайт</span>
+                </a>
+            </div>
+
+            <div class="nav-menu" id="navMenu">
+                <a href="/" class="nav-link">
+                    <i class="fas fa-home"></i>
+                    <span>Главная</span>
+                </a>
+                <a href="/catalog.html" class="nav-link">
+                    <i class="fas fa-list"></i>
+                    <span>Каталог</span>
+                </a>
+                <a href="/top.html" class="nav-link">
+                    <i class="fas fa-star"></i>
+                    <span>Топ фильмов</span>
+                </a>
+            </div>
+
+            <div class="nav-search">
+                <input type="text" id="globalSearch" placeholder="Поиск фильмов...">
+                <button onclick="searchMovies()">
+                    <i class="fas fa-search"></i>
+                </button>
+            </div>
+
+            <div class="nav-auth" id="authSection">
+                <!-- Будет заполнено JavaScript -->
+            </div>
+
+            <button class="nav-toggle" onclick="toggleMenu()">
+                <i class="fas fa-bars"></i>
+            </button>
+        </div>
+    </nav>
+</header>
+
+<!-- Основной контент -->
+<main class="auth-page">
+    <div class="container">
+        <div class="auth-container">
+            <div class="auth-card">
+                <div class="auth-header">
+                    <h1>
+                        <i class="fas fa-user-plus"></i>
+                        Регистрация
+                    </h1>
+                    <p>Создайте новый аккаунт</p>
+                </div>
+
+                <div class="auth-body">
+                    <form id="registerForm" onsubmit="register(event)">
+                        <div class="form-group">
+                            <label for="username">
+                                <i class="fas fa-user"></i>
+                                Имя пользователя
+                            </label>
+                            <input type="text" id="username" class="form-control"
+                                   placeholder="Придумайте имя пользователя" required
+                                   minlength="3" maxlength="20">
+                            <small class="form-text">От 3 до 20 символов (буквы, цифры, подчеркивание)</small>
+                            <div class="form-error" id="usernameError"></div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="email">
+                                <i class="fas fa-envelope"></i>
+                                Email адрес
+                            </label>
+                            <input type="email" id="email" class="form-control"
+                                   placeholder="Ваш email" required>
+                            <div class="form-error" id="emailError"></div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="password">
+                                <i class="fas fa-lock"></i>
+                                Пароль
+                            </label>
+                            <input type="password" id="password" class="form-control"
+                                   placeholder="Придумайте пароль" required
+                                   minlength="8">
+                            <small class="form-text">Минимум 8 символов, включая цифры, строчные и заглавные буквы</small>
+                            <div class="form-error" id="passwordError"></div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="confirmPassword">
+                                <i class="fas fa-lock"></i>
+                                Подтверждение пароля
+                            </label>
+                            <input type="password" id="confirmPassword" class="form-control"
+                                   placeholder="Повторите пароль" required>
+                            <div class="form-error" id="confirmPasswordError"></div>
+                        </div>
+
+                        <div class="form-group form-check">
+                            <input type="checkbox" id="agreeTerms" class="form-check-input" required>
+                            <label for="agreeTerms" class="form-check-label">
+                                Я соглашаюсь с
+                                <a href="/terms.html">Условиями использования</a>
+                                и
+                                <a href="/privacy.html">Политикой конфиденциальности</a>
+                            </label>
+                        </div>
+
+                        <button type="submit" class="btn btn-primary btn-block">
+                            <i class="fas fa-user-plus"></i>
+                            Зарегистрироваться
+                        </button>
+
+                        <div class="auth-links">
+                            <a href="/login.html">
+                                <i class="fas fa-sign-in-alt"></i>
+                                Уже есть аккаунт? Войти
+                            </a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <div class="auth-sidebar">
+                <div class="auth-features">
+                    <h3>
+                        <i class="fas fa-star"></i>
+                        Преимущества регистрации
+                    </h3>
+                    <ul>
+                        <li>
+                            <i class="fas fa-check"></i>
+                            Оставляйте отзывы к фильмам
+                        </li>
+                        <li>
+                            <i class="fas fa-check"></i>
+                            Составляйте списки для просмотра
+                        </li>
+                        <li>
+                            <i class="fas fa-check"></i>
+                            Получайте персональные рекомендации
+                        </li>
+                        <li>
+                            <i class="fas fa-check"></i>
+                            Участвуйте в обсуждениях
+                        </li>
+                        <li>
+                            <i class="fas fa-check"></i>
+                            Отслеживайте историю просмотров
+                        </li>
+                    </ul>
+
+                    <div class="test-credentials">
+                        <h4>
+                            <i class="fas fa-info-circle"></i>
+                            Уже есть тестовый аккаунт?
+                        </h4>
+                        <p><strong>Администратор:</strong> admin@movie.com / admin123</p>
+                        <p><strong>Пользователь:</strong> alex@example.com / password123</p>
+                        <a href="/login.html" class="btn btn-secondary btn-block">
+                            <i class="fas fa-sign-in-alt"></i>
+                            Войти в аккаунт
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+
+<!-- Подвал -->
+<footer class="footer">
+    <div class="container">
+        <div class="footer-content">
+            <div class="footer-section">
+                <h3>
+                    <i class="fas fa-film"></i>
+                    Киносайт
+                </h3>
+                <p>Крупнейшая база фильмов с отзывами и рейтингами</p>
+            </div>
+
+            <div class="footer-section">
+                <h4>Навигация</h4>
+                <a href="/">Главная</a>
+                <a href="/catalog.html">Каталог</a>
+                <a href="/top.html">Топ фильмов</a>
+                <a href="/about.html">О проекте</a>
+            </div>
+
+            <div class="footer-section">
+                <h4>Пользователю</h4>
+                <a href="/login.html">Войти</a>
+                <a href="/register.html">Регистрация</a>
+                <a href="/profile.html">Личный кабинет</a>
+                <a href="/help.html">Помощь</a>
+            </div>
+
+            <div class="footer-section">
+                <h4>Контакты</h4>
+                <p><i class="fas fa-envelope"></i> support@movie-site.com</p>
+                <p><i class="fas fa-phone"></i> +7 (999) 123-45-67</p>
+            </div>
+        </div>
+
+        <div class="footer-bottom">
+            <p>&copy; 2024 Киносайт. Все права защищены.</p>
+        </div>
+    </div>
+</footer>
+
+<script src="js/main.js"></script>
+<script src="js/auth.js"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        updateNavigation();
+
+        // Если пользователь уже авторизован, перенаправляем на главную
+        const user = AuthManager.getCurrentUser();
+        if (user) {
+            window.location.href = '/';
+        }
+    });
+
+    async function register(event) {
+        event.preventDefault();
+
+        const username = document.getElementById('username').value;
+        const email = document.getElementById('email').value;
+        const password = document.getElementById('password').value;
+        const confirmPassword = document.getElementById('confirmPassword').value;
+
+        // Сброс ошибок
+        document.getElementById('usernameError').textContent = '';
+        document.getElementById('emailError').textContent = '';
+        document.getElementById('passwordError').textContent = '';
+        document.getElementById('confirmPasswordError').textContent = '';
+
+        // Валидация
+        let isValid = true;
+
+        if (username.length < 3 || username.length > 20) {
+            document.getElementById('usernameError').textContent = 'Имя пользователя должно содержать от 3 до 20 символов';
+            isValid = false;
+        }
+
+        if (!email.includes('@')) {
+            document.getElementById('emailError').textContent = 'Введите корректный email адрес';
+            isValid = false;
+        }
+
+        if (password.length < 8) {
+            document.getElementById('passwordError').textContent = 'Пароль должен содержать минимум 8 символов';
+            isValid = false;
+        }
+
+        if (password !== confirmPassword) {
+            document.getElementById('confirmPasswordError').textContent = 'Пароли не совпадают';
+            isValid = false;
+        }
+
+        if (!isValid) {
+            return;
+        }
+
+        try {
+            const user = await AuthManager.register(username, email, password);
+
+            if (user) {
+                Utils.showNotification('Регистрация успешна! Добро пожаловать, ' + username + '!', 'success');
+                setTimeout(() => {
+                    window.location.href = '/';
+                }, 1500);
+            } else {
+                Utils.showNotification('Ошибка при регистрации', 'error');
+            }
+        } catch (error) {
+            if (error.message.includes('email already exists')) {
+                document.getElementById('emailError').textContent = 'Пользователь с таким email уже существует';
+            } else if (error.message.includes('username already exists')) {
+                document.getElementById('usernameError').textContent = 'Пользователь с таким именем уже существует';
+            } else {
+                Utils.showNotification('Ошибка при регистрации: ' + error.message, 'error');
+            }
+        }
+    }
+</script>
+</body>
+</html>

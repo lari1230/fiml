@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Каталог фильмов - Киносайт</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+<!-- Навигация -->
+<header>
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="logo">
+                <a href="/">
+                    <i class="fas fa-film"></i>
+                    <span>Киносайт</span>
+                </a>
+            </div>
+
+            <div class="nav-menu" id="navMenu">
+                <a href="/" class="nav-link">
+                    <i class="fas fa-home"></i>
+                    <span>Главная</span>
+                </a>
+                <a href="/catalog.html" class="nav-link active">
+                    <i class="fas fa-list"></i>
+                    <span>Каталог</span>
+                </a>
+                <a href="/top.html" class="nav-link">
+                    <i class="fas fa-star"></i>
+                    <span>Топ фильмов</span>
+                </a>
+            </div>
+
+            <div class="nav-search">
+                <input type="text" id="globalSearch" placeholder="Поиск фильмов...">
+                <button onclick="searchMovies()">
+                    <i class="fas fa-search"></i>
+                </button>
+            </div>
+
+            <div class="nav-auth" id="authSection">
+                <!-- Будет заполнено JavaScript -->
+            </div>
+
+            <button class="nav-toggle" onclick="toggleMenu()">
+                <i class="fas fa-bars"></i>
+            </button>
+        </div>
+    </nav>
+</header>
+
+<!-- Основной контент -->
+<main class="catalog-page">
+    <div class="container">
+        <!-- Заголовок и фильтры -->
+        <div class="catalog-header">
+            <h1 class="page-title">
+                <i class="fas fa-film"></i>
+                Каталог фильмов
+            </h1>
+
+            <div class="search-bar">
+                <input type="text" id="searchInput" placeholder="Поиск по названию, режиссеру...">
+                <button class="btn btn-primary" onclick="performSearch()">
+                    <i class="fas fa-search"></i>
+                    Поиск
+                </button>
+            </div>
+        </div>
+
+        <!-- Фильтры -->
+        <div class="filters">
+            <div class="filter-group">
+                <label for="sortBy">
+                    <i class="fas fa-sort"></i>
+                    Сортировка
+                </label>
+                <select id="sortBy" onchange="loadMovies()">
+                    <option value="created_at">По дате добавления</option>
+                    <option value="rating">По рейтингу</option>
+                    <option value="year">По году выпуска</option>
+                    <option value="title">По названию</option>
+                </select>
+            </div>
+
+            <div class="filter-group">
+                <label for="sortOrder">
+                    <i class="fas fa-sort-amount-down"></i>
+                    Порядок
+                </label>
+                <select id="sortOrder" onchange="loadMovies()">
+                    <option value="desc">По убыванию</option>
+                    <option value="asc">По возрастанию</option>
+                </select>
+            </div>
+
+            <div class="filter-group">
+                <label for="yearFrom">
+                    <i class="fas fa-calendar-alt"></i>
+                    Год от
+                </label>
+                <input type="number" id="yearFrom" placeholder="1900" min="1900" max="2024" onchange="loadMovies()">
+            </div>
+
+            <div class="filter-group">
+                <label for="yearTo">
+                    <i class="fas fa-calendar-alt"></i>
+                    Год до
+                </label>
+                <input type="number" id="yearTo" placeholder="2024" min="1900" max="2024" onchange="loadMovies()">
+            </div>
+
+            <button class="btn btn-secondary" onclick="resetFilters()">
+                <i class="fas fa-redo"></i>
+                Сбросить фильтры
+            </button>
+
+            <!-- Кнопка добавления фильма (только для админа) -->
+            <button class="btn btn-primary" id="addMovieBtn" onclick="showAddMovieForm()" style="display: none;">
+                <i class="fas fa-plus"></i>
+                Добавить фильм
+            </button>
+        </div>
+
+        <!-- Результаты поиска -->
+        <div id="searchResults" class="search-results" style="display: none;">
+            <h3>Результаты поиска</h3>
+            <button class="btn btn-small" onclick="clearSearch()">
+                <i class="fas fa-times"></i>
+                Очистить поиск
+            </button>
+        </div>
+
+        <!-- Сетка фильмов -->
+        <div id="moviesContainer" class="movies-grid">
+            <!-- Фильмы загружаются через JavaScript -->
+            <div class="loading">
+                <div class="loading-spinner"></div>
+                <p>Загрузка фильмов...</p>
+            </div>
+        </div>
+
+        <!-- Пагинация -->
+        <div class="pagination">
+            <button id="prevPage" class="page-btn" onclick="prevPage()" disabled>
+                <i class="fas fa-chevron-left"></i>
+                Назад
+            </button>
+
+            <div class="page-info">
+                Страница <span id="currentPage">1</span> из <span id="totalPages">1</span>
+            </div>
+
+            <button id="nextPage" class="page-btn" onclick="nextPage()" disabled>
+                Вперед
+                <i class="fas fa-chevron-right"></i>
+            </button>
+        </div>
+    </div>
+</main>
+
+<!-- Модальное окно для добавления фильма -->
+<div id="addMovieModal" class="modal" style="display: none;">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h2>
+                <i class="fas fa-plus-circle"></i>
+                Добавить новый фильм
+            </h2>
+            <button class="modal-close" onclick="closeAddMovieForm()">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+
+        <div class="modal-body">
+            <form id="addMovieForm" onsubmit="addMovie(event)">
+                <div class="form-group">
+                    <label for="movieTitle">Название фильма *</label>
+                    <input type="text" id="movieTitle" class="form-control" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="movieDirector">Режиссер</label>
+                    <input type="text" id="movieDirector" class="form-control">
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="movieYear">Год выпуска *</label>
+                        <input type="number" id="movieYear" class="form-control" min="1900" max="2024" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="movieDuration">Продолжительность (мин)</label>
+                        <input type="number" id="movieDuration" class="form-control" min="1" max="600">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="movieDescription">Описание</label>
+                    <textarea id="movieDescription" class="form-control" rows="4"></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label for="moviePosterUrl">URL постера</label>
+                    <input type="url" id="moviePosterUrl" class="form-control" placeholder="https://example.com/poster.jpg">
+                </div>
+
+                <div class="form-group">
+                    <label for="movieGenres">Жанры</label>
+                    <select id="movieGenres" class="form-control" multiple style="height: 120px;">
+                        <!-- Жанры загружаются через JavaScript -->
+                    </select>
+                    <small class="form-text">Удерживайте Ctrl (Cmd на Mac) для выбора нескольких жанров</small>
+                </div>
+
+                <div class="form-actions">
+                    <button type="button" class="btn btn-secondary" onclick="closeAddMovieForm()">
+                        Отмена
+                    </button>
+                    <button type="submit" class="btn btn-primary">
+                        <i class="fas fa-save"></i>
+                        Сохранить фильм
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- Подвал -->
+<footer class="footer">
+    <div class="container">
+        <div class="footer-content">
+            <div class="footer-section">
+                <h3>
+                    <i class="fas fa-film"></i>
+                    Киносайт
+                </h3>
+                <p>Крупнейшая база фильмов с отзывами и рейтингами</p>
+            </div>
+
+            <div class="footer-section">
+                <h4>Навигация</h4>
+                <a href="/">Главная</a>
+                <a href="/catalog.html">Каталог</a>
+                <a href="/top.html">Топ фильмов</a>
+                <a href="/about.html">О проекте</a>
+            </div>
+
+            <div class="footer-section">
+                <h4>Пользователю</h4>
+                <a href="/login.html">Войти</a>
+                <a href="/register.html">Регистрация</a>
+                <a href="/profile.html">Личный кабинет</a>
+                <a href="/help.html">Помощь</a>
+            </div>
+
+            <div class="footer-section">
+                <h4>Контакты</h4>
+                <p><i class="fas fa-envelope"></i> support@movie-site.com</p>
+                <p><i class="fas fa-phone"></i> +7 (999) 123-45-67</p>
+            </div>
+        </div>
+
+        <div class="footer-bottom">
+            <p>&copy; 2024 Киносайт. Все права защищены.</p>
+        </div>
+    </div>
+</footer>
+
+<script src="js/main.js"></script>
+<script src="js/auth.js"></script>
+<script src="js/catalog.js"></script>
+</body>
+</html>

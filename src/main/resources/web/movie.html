@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Фильм - Киносайт</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+<!-- Навигация -->
+<header>
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="logo">
+                <a href="/">
+                    <i class="fas fa-film"></i>
+                    <span>Киносайт</span>
+                </a>
+            </div>
+
+            <div class="nav-menu" id="navMenu">
+                <a href="/" class="nav-link">
+                    <i class="fas fa-home"></i>
+                    <span>Главная</span>
+                </a>
+                <a href="/catalog.html" class="nav-link">
+                    <i class="fas fa-list"></i>
+                    <span>Каталог</span>
+                </a>
+                <a href="/top.html" class="nav-link">
+                    <i class="fas fa-star"></i>
+                    <span>Топ фильмов</span>
+                </a>
+            </div>
+
+            <div class="nav-search">
+                <input type="text" id="globalSearch" placeholder="Поиск фильмов...">
+                <button onclick="searchMovies()">
+                    <i class="fas fa-search"></i>
+                </button>
+            </div>
+
+            <div class="nav-auth" id="authSection">
+                <!-- Будет заполнено JavaScript -->
+            </div>
+
+            <button class="nav-toggle" onclick="toggleMenu()">
+                <i class="fas fa-bars"></i>
+            </button>
+        </div>
+    </nav>
+</header>
+
+<!-- Основной контент -->
+<main class="movie-detail-page">
+    <div class="container">
+        <!-- Загрузка -->
+        <div id="loading" class="loading">
+            <div class="loading-spinner"></div>
+            <p>Загрузка информации о фильме...</p>
+        </div>
+
+        <!-- Информация о фильме -->
+        <div id="movieContent" style="display: none;">
+            <!-- Заголовок фильма -->
+            <div class="movie-header">
+                <div class="movie-poster-large">
+                    <img id="moviePoster" src="" alt="Постер фильма">
+                </div>
+
+                <div class="movie-info-detail">
+                    <h1 id="movieTitle"></h1>
+
+                    <div class="movie-meta">
+                        <div class="meta-item">
+                            <i class="fas fa-user"></i>
+                            <span id="movieDirector"></span>
+                        </div>
+                        <div class="meta-item">
+                            <i class="fas fa-calendar-alt"></i>
+                            <span id="movieYear"></span>
+                        </div>
+                        <div class="meta-item">
+                            <i class="fas fa-clock"></i>
+                            <span id="movieDuration"></span> мин
+                        </div>
+                    </div>
+
+                    <div class="movie-rating-large">
+                        <div class="rating-value" id="movieRating"></div>
+                        <div class="rating-stars" id="movieStars"></div>
+                        <div class="rating-count" id="reviewCount"></div>
+                    </div>
+
+                    <div class="movie-genres" id="movieGenres">
+                        <!-- Жанры загружаются через JavaScript -->
+                    </div>
+
+                    <p class="movie-description" id="movieDescription"></p>
+
+                    <!-- Кнопки действий -->
+                    <div class="movie-actions">
+                        <button class="btn btn-primary" onclick="showReviewForm()" id="addReviewBtn">
+                            <i class="fas fa-edit"></i>
+                            Оставить отзыв
+                        </button>
+
+                        <!-- Кнопки для администратора -->
+                        <div id="adminActions" style="display: none; margin-top: 1rem;">
+                            <button class="btn btn-secondary" onclick="editMovie()">
+                                <i class="fas fa-edit"></i>
+                                Редактировать фильм
+                            </button>
+                            <button class="btn btn-danger" onclick="deleteMovie()">
+                                <i class="fas fa-trash"></i>
+                                Удалить фильм
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Форма отзыва -->
+            <div id="reviewForm" class="review-form" style="display: none;">
+                <h3>
+                    <i class="fas fa-edit"></i>
+                    Ваш отзыв
+                </h3>
+
+                <form id="reviewFormContent" onsubmit="submitReview(event)">
+                    <div class="form-group">
+                        <label for="reviewRating">Оценка (1-10)</label>
+                        <div class="rating-selector">
+                            <div class="rating-options">
+                                <!-- Рейтинг кнопки от 1 до 10 -->
+                                <div class="rating-buttons" id="ratingButtons">
+                                    <!-- Будет сгенерировано через JavaScript -->
+                                </div>
+                            </div>
+                            <input type="hidden" id="reviewRating" name="rating" required>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="reviewComment">Комментарий</label>
+                        <textarea id="reviewComment" class="form-control" rows="4"
+                                  placeholder="Поделитесь вашим мнением о фильме..."
+                                  maxlength="1000"></textarea>
+                        <small class="form-text">Максимум 1000 символов</small>
+                    </div>
+
+                    <div class="form-actions">
+                        <button type="button" class="btn btn-secondary" onclick="hideReviewForm()">
+                            Отмена
+                        </button>
+                        <button type="submit" class="btn btn-primary">
+                            <i class="fas fa-paper-plane"></i>
+                            Отправить отзыв
+                        </button>
+                    </div>
+                </form>
+            </div>
+
+            <!-- Существующий отзыв пользователя -->
+            <div id="existingReview" class="existing-review" style="display: none;">
+                <h3>
+                    <i class="fas fa-star"></i>
+                    Ваш отзыв
+                </h3>
+                <div class="review-card">
+                    <div class="review-header">
+                        <div class="review-rating">
+                            <i class="fas fa-star"></i>
+                            <span id="userRating"></span>/10
+                        </div>
+                        <div class="review-actions">
+                            <button class="btn btn-small" onclick="editExistingReview()">
+                                <i class="fas fa-edit"></i>
+                                Редактировать
+                            </button>
+                            <button class="btn btn-small btn-danger" onclick="deleteExistingReview()">
+                                <i class="fas fa-trash"></i>
+                                Удалить
+                            </button>
+                        </div>
+                    </div>
+                    <p id="userComment" class="review-text"></p>
+                    <span class="review-date" id="reviewDate"></span>
+                </div>
+            </div>
+
+            <!-- Отзывы других пользователей -->
+            <section class="section">
+                <h2 class="section-title">
+                    <i class="fas fa-comments"></i>
+                    Отзывы пользователей
+                </h2>
+
+                <div id="reviewsContainer">
+                    <div class="loading">
+                        <div class="loading-spinner"></div>
+                        <p>Загрузка отзывов...</p>
+                    </div>
+                </div>
+
+                <div id="noReviews" class="no-content" style="display: none;">
+                    <i class="fas fa-comment-slash"></i>
+                    <h3>Пока нет отзывов</h3>
+                    <p>Будьте первым, кто оставит отзыв об этом фильме!</p>
+                </div>
+            </section>
+        </div>
+
+        <!-- Ошибка -->
+        <div id="errorContent" class="error-content" style="display: none;">
+            <i class="fas fa-exclamation-triangle"></i>
+            <h2>Фильм не найден</h2>
+            <p>Запрошенный фильм не существует или был удален.</p>
+            <a href="/catalog.html" class="btn btn-primary">
+                <i class="fas fa-arrow-left"></i>
+                Вернуться в каталог
+            </a>
+        </div>
+    </div>
+</main>
+
+<!-- Модальное окно редактирования фильма -->
+<div id="editMovieModal" class="modal" style="display: none;">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h2>
+                <i class="fas fa-edit"></i>
+                Редактировать фильм
+            </h2>
+            <button class="modal-close" onclick="closeEditMovieForm()">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+
+        <div class="modal-body">
+            <form id="editMovieForm" onsubmit="updateMovie(event)">
+                <div class="form-group">
+                    <label for="editMovieTitle">Название фильма *</label>
+                    <input type="text" id="editMovieTitle" class="form-control" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="editMovieDirector">Режиссер</label>
+                    <input type="text" id="editMovieDirector" class="form-control">
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="editMovieYear">Год выпуска *</label>
+                        <input type="number" id="editMovieYear" class="form-control" min="1900" max="2024" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="editMovieDuration">Продолжительность (мин)</label>
+                        <input type="number" id="editMovieDuration" class="form-control" min="1" max="600">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="editMovieDescription">Описание</label>
+                    <textarea id="editMovieDescription" class="form-control" rows="4"></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label for="editMoviePosterUrl">URL постера</label>
+                    <input type="url" id="editMoviePosterUrl" class="form-control">
+                </div>
+
+                <div class="form-actions">
+                    <button type="button" class="btn btn-secondary" onclick="closeEditMovieForm()">
+                        Отмена
+                    </button>
+                    <button type="submit" class="btn btn-primary">
+                        <i class="fas fa-save"></i>
+                        Сохранить изменения
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- Подвал -->
+<footer class="footer">
+    <div class="container">
+        <div class="footer-content">
+            <div class="footer-section">
+                <h3>
+                    <i class="fas fa-film"></i>
+                    Киносайт
+                </h3>
+                <p>Крупнейшая база фильмов с отзывами и рейтингами</p>
+            </div>
+
+            <div class="footer-section">
+                <h4>Навигация</h4>
+                <a href="/">Главная</a>
+                <a href="/catalog.html">Каталог</a>
+                <a href="/top.html">Топ фильмов</a>
+                <a href="/about.html">О проекте</a>
+            </div>
+
+            <div class="footer-section">
+                <h4>Пользователю</h4>
+                <a href="/login.html">Войти</a>
+                <a href="/register.html">Регистрация</a>
+                <a href="/profile.html">Личный кабинет</a>
+                <a href="/help.html">Помощь</a>
+            </div>
+
+            <div class="footer-section">
+                <h4>Контакты</h4>
+                <p><i class="fas fa-envelope"></i> support@movie-site.com</p>
+                <p><i class="fas fa-phone"></i> +7 (999) 123-45-67</p>
+            </div>
+        </div>
+
+        <div class="footer-bottom">
+            <p>&copy; 2024 Киносайт. Все права защищены.</p>
+        </div>
+    </div>
+</footer>
+
+<script src="js/main.js"></script>
+<script src="js/auth.js"></script>
+<script src="js/movie.js"></script>
+</body>
+</html>

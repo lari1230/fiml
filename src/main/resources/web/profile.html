@@ -1,0 +1,404 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Личный кабинет - Киносайт</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+<!-- Навигация -->
+<header>
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="logo">
+                <a href="/">
+                    <i class="fas fa-film"></i>
+                    <span>Киносайт</span>
+                </a>
+            </div>
+
+            <div class="nav-menu" id="navMenu">
+                <a href="/" class="nav-link">
+                    <i class="fas fa-home"></i>
+                    <span>Главная</span>
+                </a>
+                <a href="/catalog.html" class="nav-link">
+                    <i class="fas fa-list"></i>
+                    <span>Каталог</span>
+                </a>
+                <a href="/top.html" class="nav-link">
+                    <i class="fas fa-star"></i>
+                    <span>Топ фильмов</span>
+                </a>
+            </div>
+
+            <div class="nav-search">
+                <input type="text" id="globalSearch" placeholder="Поиск фильмов...">
+                <button onclick="searchMovies()">
+                    <i class="fas fa-search"></i>
+                </button>
+            </div>
+
+            <div class="nav-auth" id="authSection">
+                <!-- Будет заполнено JavaScript -->
+            </div>
+
+            <button class="nav-toggle" onclick="toggleMenu()">
+                <i class="fas fa-bars"></i>
+            </button>
+        </div>
+    </nav>
+</header>
+
+<!-- Основной контент -->
+<main class="profile-page">
+    <div class="container">
+        <!-- Загрузка -->
+        <div id="loading" class="loading">
+            <div class="loading-spinner"></div>
+            <p>Загрузка профиля...</p>
+        </div>
+
+        <!-- Профиль -->
+        <div id="profileContent" style="display: none;">
+            <div class="profile-header">
+                <div class="profile-avatar">
+                    <i class="fas fa-user-circle"></i>
+                </div>
+
+                <div class="profile-info">
+                    <h1 id="profileUsername"></h1>
+                    <div class="profile-meta">
+                        <span class="profile-email" id="profileEmail"></span>
+                        <span class="profile-role" id="profileRole"></span>
+                        <span class="profile-joined" id="profileJoined"></span>
+                    </div>
+                </div>
+
+                <div class="profile-actions">
+                    <button class="btn btn-secondary" onclick="showEditProfileForm()">
+                        <i class="fas fa-edit"></i>
+                        Редактировать профиль
+                    </button>
+                    <button class="btn btn-primary" onclick="showChangePasswordForm()">
+                        <i class="fas fa-key"></i>
+                        Сменить пароль
+                    </button>
+                </div>
+            </div>
+
+            <!-- Статистика пользователя -->
+            <div class="profile-stats">
+                <div class="stat-card">
+                    <i class="fas fa-star"></i>
+                    <h3 id="reviewsCount">0</h3>
+                    <p>Отзывов написано</p>
+                </div>
+                <div class="stat-card">
+                    <i class="fas fa-film"></i>
+                    <h3 id="moviesRated">0</h3>
+                    <p>Фильмов оценено</p>
+                </div>
+                <div class="stat-card">
+                    <i class="fas fa-comment"></i>
+                    <h3 id="commentsCount">0</h3>
+                    <p>Комментариев оставлено</p>
+                </div>
+                <div class="stat-card">
+                    <i class="fas fa-calendar-alt"></i>
+                    <h3 id="daysActive">0</h3>
+                    <p>Дней на сайте</p>
+                </div>
+            </div>
+
+            <!-- Вкладки -->
+            <div class="profile-tabs">
+                <div class="tabs-header">
+                    <button class="tab-btn active" onclick="switchTab('reviews')">
+                        <i class="fas fa-star"></i>
+                        Мои отзывы
+                    </button>
+                    <button class="tab-btn" onclick="switchTab('favorites')">
+                        <i class="fas fa-heart"></i>
+                        Избранное
+                    </button>
+                    <button class="tab-btn" onclick="switchTab('watchlist')">
+                        <i class="fas fa-clock"></i>
+                        Буду смотреть
+                    </button>
+                    <button class="tab-btn" onclick="switchTab('settings')">
+                        <i class="fas fa-cog"></i>
+                        Настройки
+                    </button>
+                </div>
+
+                <!-- Контент вкладок -->
+                <div class="tabs-content">
+                    <!-- Мои отзывы -->
+                    <div id="reviewsTab" class="tab-pane active">
+                        <h2>
+                            <i class="fas fa-star"></i>
+                            Мои отзывы
+                        </h2>
+
+                        <div id="userReviews" class="reviews-list">
+                            <!-- Отзывы загружаются через JavaScript -->
+                            <div class="loading">
+                                <div class="loading-spinner"></div>
+                                <p>Загрузка ваших отзывов...</p>
+                            </div>
+                        </div>
+
+                        <div id="noReviews" class="no-content" style="display: none;">
+                            <i class="fas fa-comment-slash"></i>
+                            <h3>У вас пока нет отзывов</h3>
+                            <p>Начните делиться своим мнением о фильмах!</p>
+                            <a href="/catalog.html" class="btn btn-primary">
+                                <i class="fas fa-film"></i>
+                                Перейти к каталогу
+                            </a>
+                        </div>
+                    </div>
+
+                    <!-- Избранное -->
+                    <div id="favoritesTab" class="tab-pane">
+                        <h2>
+                            <i class="fas fa-heart"></i>
+                            Избранные фильмы
+                        </h2>
+
+                        <div id="favoritesList" class="movies-grid">
+                            <!-- Избранные фильмы загружаются через JavaScript -->
+                            <div class="no-content">
+                                <i class="fas fa-heart"></i>
+                                <h3>Список избранного пуст</h3>
+                                <p>Добавляйте фильмы в избранное, чтобы быстро находить их позже</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Буду смотреть -->
+                    <div id="watchlistTab" class="tab-pane">
+                        <h2>
+                            <i class="fas fa-clock"></i>
+                            Фильмы для просмотра
+                        </h2>
+
+                        <div id="watchlist" class="movies-grid">
+                            <!-- Список для просмотра загружается через JavaScript -->
+                            <div class="no-content">
+                                <i class="fas fa-clock"></i>
+                                <h3>Список для просмотра пуст</h3>
+                                <p>Добавляйте фильмы, которые планируете посмотреть</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Настройки -->
+                    <div id="settingsTab" class="tab-pane">
+                        <h2>
+                            <i class="fas fa-cog"></i>
+                            Настройки аккаунта
+                        </h2>
+
+                        <div class="settings-form">
+                            <div class="form-group">
+                                <label>Уведомления</label>
+                                <div class="form-check">
+                                    <input type="checkbox" id="notifyReviews" class="form-check-input" checked>
+                                    <label for="notifyReviews" class="form-check-label">
+                                        Уведомлять об ответах на мои отзывы
+                                    </label>
+                                </div>
+                                <div class="form-check">
+                                    <input type="checkbox" id="notifyNews" class="form-check-input" checked>
+                                    <label for="notifyNews" class="form-check-label">
+                                        Получать новости о новых фильмах
+                                    </label>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label>Приватность</label>
+                                <div class="form-check">
+                                    <input type="checkbox" id="showProfile" class="form-check-input" checked>
+                                    <label for="showProfile" class="form-check-label">
+                                        Показывать мой профиль другим пользователям
+                                    </label>
+                                </div>
+                                <div class="form-check">
+                                    <input type="checkbox" id="showReviews" class="form-check-input" checked>
+                                    <label for="showReviews" class="form-check-label">
+                                        Показывать мои отзывы публично
+                                    </label>
+                                </div>
+                            </div>
+
+                            <button class="btn btn-primary" onclick="saveSettings()">
+                                <i class="fas fa-save"></i>
+                                Сохранить настройки
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Не авторизован -->
+        <div id="notAuthorized" class="error-content" style="display: none;">
+            <i class="fas fa-exclamation-triangle"></i>
+            <h2>Доступ запрещен</h2>
+            <p>Для просмотра этой страницы необходимо войти в аккаунт</p>
+            <div class="auth-actions">
+                <a href="/login.html" class="btn btn-primary">
+                    <i class="fas fa-sign-in-alt"></i>
+                    Войти
+                </a>
+                <a href="/register.html" class="btn btn-secondary">
+                    <i class="fas fa-user-plus"></i>
+                    Зарегистрироваться
+                </a>
+            </div>
+        </div>
+    </div>
+</main>
+
+<!-- Модальное окно редактирования профиля -->
+<div id="editProfileModal" class="modal" style="display: none;">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h2>
+                <i class="fas fa-edit"></i>
+                Редактировать профиль
+            </h2>
+            <button class="modal-close" onclick="closeEditProfileForm()">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+
+        <div class="modal-body">
+            <form id="editProfileForm" onsubmit="updateProfile(event)">
+                <div class="form-group">
+                    <label for="editUsername">Имя пользователя</label>
+                    <input type="text" id="editUsername" class="form-control"
+                           minlength="3" maxlength="20" required>
+                    <div class="form-error" id="editUsernameError"></div>
+                </div>
+
+                <div class="form-group">
+                    <label for="editEmail">Email адрес</label>
+                    <input type="email" id="editEmail" class="form-control" required>
+                    <div class="form-error" id="editEmailError"></div>
+                </div>
+
+                <div class="form-actions">
+                    <button type="button" class="btn btn-secondary" onclick="closeEditProfileForm()">
+                        Отмена
+                    </button>
+                    <button type="submit" class="btn btn-primary">
+                        <i class="fas fa-save"></i>
+                        Сохранить изменения
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- Модальное окно смены пароля -->
+<div id="changePasswordModal" class="modal" style="display: none;">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h2>
+                <i class="fas fa-key"></i>
+                Смена пароля
+            </h2>
+            <button class="modal-close" onclick="closeChangePasswordForm()">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+
+        <div class="modal-body">
+            <form id="changePasswordForm" onsubmit="changePassword(event)">
+                <div class="form-group">
+                    <label for="currentPassword">Текущий пароль</label>
+                    <input type="password" id="currentPassword" class="form-control" required>
+                    <div class="form-error" id="currentPasswordError"></div>
+                </div>
+
+                <div class="form-group">
+                    <label for="newPassword">Новый пароль</label>
+                    <input type="password" id="newPassword" class="form-control"
+                           minlength="8" required>
+                    <small class="form-text">Минимум 8 символов</small>
+                    <div class="form-error" id="newPasswordError"></div>
+                </div>
+
+                <div class="form-group">
+                    <label for="confirmNewPassword">Подтвердите новый пароль</label>
+                    <input type="password" id="confirmNewPassword" class="form-control" required>
+                    <div class="form-error" id="confirmNewPasswordError"></div>
+                </div>
+
+                <div class="form-actions">
+                    <button type="button" class="btn btn-secondary" onclick="closeChangePasswordForm()">
+                        Отмена
+                    </button>
+                    <button type="submit" class="btn btn-primary">
+                        <i class="fas fa-save"></i>
+                        Сменить пароль
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- Подвал -->
+<footer class="footer">
+    <div class="container">
+        <div class="footer-content">
+            <div class="footer-section">
+                <h3>
+                    <i class="fas fa-film"></i>
+                    Киносайт
+                </h3>
+                <p>Крупнейшая база фильмов с отзывами и рейтингами</p>
+            </div>
+
+            <div class="footer-section">
+                <h4>Навигация</h4>
+                <a href="/">Главная</a>
+                <a href="/catalog.html">Каталог</a>
+                <a href="/top.html">Топ фильмов</a>
+                <a href="/about.html">О проекте</a>
+            </div>
+
+            <div class="footer-section">
+                <h4>Пользователю</h4>
+                <a href="/login.html">Войти</a>
+                <a href="/register.html">Регистрация</a>
+                <a href="/profile.html">Личный кабинет</a>
+                <a href="/help.html">Помощь</a>
+            </div>
+
+            <div class="footer-section">
+                <h4>Контакты</h4>
+                <p><i class="fas fa-envelope"></i> support@movie-site.com</p>
+                <p><i class="fas fa-phone"></i> +7 (999) 123-45-67</p>
+            </div>
+        </div>
+
+        <div class="footer-bottom">
+            <p>&copy; 2024 Киносайт. Все права защищены.</p>
+        </div>
+    </div>
+</footer>
+
+<script src="js/main.js"></script>
+<script src="js/auth.js"></script>
+<script src="js/profile.js"></script>
+</body>
+</html>
